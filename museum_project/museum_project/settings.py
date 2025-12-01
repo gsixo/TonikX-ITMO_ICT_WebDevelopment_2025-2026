@@ -25,8 +25,17 @@ SECRET_KEY = 'django-insecure-_4uj@w6vxlk&5+iy*ift%lc7%&%^!88^$l%0l63^&4fhdv4j*8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '127.0.0.1:8000']
+CORS_ALLOWED_ORIGINS = [
+       'http://localhost:5173',
+       'http://127.0.0.1:5173',
+]
+CORS_ALLOW_CREDENTIALS = True
 
+CSRF_TRUSTED_ORIGINS = [
+       'http://localhost:5173',
+       'http://127.0.0.1:5173',
+]
 
 # Application definition
 
@@ -42,12 +51,17 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
 
+    'drf_spectacular',
+
+    'corsheaders',
+
     'museum_app',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -116,6 +130,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+DEBUG = True
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
@@ -137,8 +153,15 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 DJOSER = {
     'USER_CREATE_PASSWORD_RETYPE': True,
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Museum API',
+    'DESCRIPTION': 'API for museum funds, items, movements, and reports',
+    'VERSION': '1.0.0',
 }

@@ -1,10 +1,35 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
 
-from .models import StorageFund, Collection, MuseumItem
-from .serializers import StorageFundSerializer, CollectionSerializer, MuseumItemSerializer
+from .models import (
+    Address,
+    StorageFund,
+    AuxiliaryCardIndex,
+    Collection,
+    Author,
+    MuseumItem,
+    Organization,
+    Exhibition,
+    ExhibitionParticipation,
+    CollectionItem,
+    MovementAct,
+    Movement,
+)
+from .serializers import (
+    AddressSerializer,
+    StorageFundSerializer,
+    AuxiliaryCardIndexSerializer,
+    CollectionSerializer,
+    AuthorSerializer,
+    MuseumItemSerializer,
+    OrganizationSerializer,
+    ExhibitionSerializer,
+    ExhibitionParticipationSerializer,
+    CollectionItemSerializer,
+    MovementActSerializer,
+    MovementSerializer,
+)
 from . import services
 
 
@@ -16,7 +41,16 @@ can render them automatically into your MkDocs site.
 """
 
 
-class StorageFundViewSet(viewsets.ReadOnlyModelViewSet):
+class AddressViewSet(viewsets.ModelViewSet):
+    """
+    CRUD for addresses used by funds, organizations and exhibitions.
+    """
+
+    queryset = Address.objects.all()
+    serializer_class = AddressSerializer
+
+
+class StorageFundViewSet(viewsets.ModelViewSet):
     """
     ViewSet for StorageFund management.
 
@@ -271,3 +305,87 @@ class MuseumItemViewSet(viewsets.ModelViewSet):
         """
         data = services.get_full_funds_report()
         return Response(data)
+
+
+class AuxiliaryCardIndexViewSet(viewsets.ModelViewSet):
+    """
+    CRUD for auxiliary card indexes that group thematic collections.
+    """
+
+    queryset = AuxiliaryCardIndex.objects.select_related('fund').all()
+    serializer_class = AuxiliaryCardIndexSerializer
+
+
+class AuthorViewSet(viewsets.ModelViewSet):
+    """
+    CRUD for authors (first author of a museum item).
+    """
+
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
+
+class OrganizationViewSet(viewsets.ModelViewSet):
+    """
+    CRUD for partner organizations that host exhibitions or receive items.
+    """
+
+    queryset = Organization.objects.select_related('address').all()
+    serializer_class = OrganizationSerializer
+
+
+class ExhibitionViewSet(viewsets.ModelViewSet):
+    """
+    CRUD for exhibitions.
+    """
+
+    queryset = Exhibition.objects.select_related('location_address', 'organization').all()
+    serializer_class = ExhibitionSerializer
+
+
+class ExhibitionParticipationViewSet(viewsets.ModelViewSet):
+    """
+    Manage participation of items in exhibitions.
+    """
+
+    queryset = ExhibitionParticipation.objects.select_related('item', 'exhibition').all()
+    serializer_class = ExhibitionParticipationSerializer
+
+
+class CollectionItemViewSet(viewsets.ModelViewSet):
+    """
+    Manage explicit links between collections and museum items.
+    """
+
+    queryset = CollectionItem.objects.select_related('collection', 'item').all()
+    serializer_class = CollectionItemSerializer
+
+
+class MovementActViewSet(viewsets.ModelViewSet):
+    """
+    CRUD for movement acts. performed_by is autofilled with the current user.
+    """
+
+    queryset = MovementAct.objects.prefetch_related('movements').all()
+    serializer_class = MovementActSerializer
+
+    def perform_create(self, serializer):
+        performer = self.request.user if self.request.user.is_authenticated else None
+        serializer.save(performed_by=performer)
+
+
+class MovementViewSet(viewsets.ModelViewSet):
+    """
+    CRUD for movements (individual lines linked to an act).
+    """
+
+    queryset = Movement.objects.select_related(
+        'act',
+        'item',
+        'collection',
+        'external_organization',
+        'exhibition',
+        'from_fund',
+        'to_fund',
+    ).all()
+    serializer_class = MovementSerializer
