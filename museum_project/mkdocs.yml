@@ -1,0 +1,27 @@
+site_name: Museum API
+site_description: API docs for the museum project (auto-generated from code docstrings)
+
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - API:
+      - Overview: api_overview.md
+      - Auto API: api.md
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: true
+            docstring_style: google
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - pymdownx.superfences
+  - toc:
+      permalink: true
