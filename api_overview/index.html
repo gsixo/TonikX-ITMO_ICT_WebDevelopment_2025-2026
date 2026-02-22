@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Overview - Museum API</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Museum API</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Overview</a>
+</li>
+                                    
+<li>
+    <a href="../api/" class="dropdown-item">Auto API</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href=".." class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../api/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#api-overview" class="nav-link">API Overview</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#base-url" class="nav-link">Base URL</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#cors-auth" class="nav-link">CORS &amp; Auth</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#approved-ui-interfaces" class="nav-link">Approved UI Interfaces</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#domain-endpoints" class="nav-link">Domain Endpoints</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#front-end-integration" class="nav-link">Front-end Integration</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="api-overview">API Overview<a class="headerlink" href="#api-overview" title="Permanent link">&para;</a></h1>
+<p>This page explains the general API layout, authentication and includes example requests.</p>
+<h2 id="base-url">Base URL<a class="headerlink" href="#base-url" title="Permanent link">&para;</a></h2>
+<p>When the Django server is running locally:</p>
+<p>http://127.0.0.1:8000/</p>
+<p>The API root (router) is mounted at:
+/api/</p>
+<p>The SPA client (Vite + Vue + Vuetify) expects the <code>VITE_API_BASE_URL</code> variable to point to the host that serves Django. Example <code>.env</code> contents for the front-end:</p>
+<div class="highlight"><pre><span></span><code>VITE_API_BASE_URL=http://127.0.0.1:8000
+</code></pre></div>
+<h2 id="cors-auth">CORS &amp; Auth<a class="headerlink" href="#cors-auth" title="Permanent link">&para;</a></h2>
+<ul>
+<li>CORS is enabled via <code>django-cors-headers</code> for <code>http://localhost:5173</code> and <code>http://127.0.0.1:5173</code> with credentials support (cookies + Token header).</li>
+<li>Authentication flows rely on Djoser token endpoints:</li>
+<li><code>POST /api/auth/token/login/</code> — obtain token</li>
+<li><code>POST /api/auth/token/logout/</code> — revoke token</li>
+<li><code>POST /api/auth/users/</code> — registration</li>
+<li><code>GET/PATCH /api/auth/users/me/</code> — profile view/update</li>
+<li><code>POST /api/auth/users/set_password/</code> — change password</li>
+</ul>
+<h2 id="approved-ui-interfaces">Approved UI Interfaces<a class="headerlink" href="#approved-ui-interfaces" title="Permanent link">&para;</a></h2>
+<p>Согласованный с преподавателем перечень экранов (пункт 4 задания):</p>
+<ol>
+<li><strong>Auth</strong>: логин, регистрация, смена пароля, редактирование профиля.</li>
+<li><strong>Dashboard</strong>: обзор фонда, процентное распределение, ключевые показатели.</li>
+<li><strong>Funds</strong>: CRUD фондов, адресов и типов.</li>
+<li><strong>Collections/Indexes</strong>: CRUD комплектов и вспомогательных картотек.</li>
+<li><strong>Items</strong>: карточки музейных предметов, фильтры, создание авторов.</li>
+<li><strong>Movement Acts</strong>: учёт актов движения и строк движений (включая внешние организации/выставки).</li>
+<li><strong>Reports</strong>: пять аналитических запросов, описанных в задании (выставки по фондам, размеры комплектов и т.д.).</li>
+</ol>
+<p>Каждый экран взаимодействует с DRF ViewSet’ами напрямую через Axios, токен авторизации подставляется автоматически.</p>
+<h2 id="domain-endpoints">Domain Endpoints<a class="headerlink" href="#domain-endpoints" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Сущность</th>
+<th>Endpoint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Адреса</td>
+<td><code>/api/addresses/</code></td>
+</tr>
+<tr>
+<td>Фонды</td>
+<td><code>/api/funds/</code> (+ <code>/exhibitions_count/</code>, <code>/full_report/</code>)</td>
+</tr>
+<tr>
+<td>Картотеки</td>
+<td><code>/api/auxiliary-indexes/</code></td>
+</tr>
+<tr>
+<td>Комплекты</td>
+<td><code>/api/collections/</code> (+ <code>/{id}/items_count/</code>)</td>
+</tr>
+<tr>
+<td>Авторы</td>
+<td><code>/api/authors/</code></td>
+</tr>
+<tr>
+<td>Предметы</td>
+<td><code>/api/items/</code> (+ отчётные действия)</td>
+</tr>
+<tr>
+<td>Организации</td>
+<td><code>/api/organizations/</code></td>
+</tr>
+<tr>
+<td>Выставки</td>
+<td><code>/api/exhibitions/</code></td>
+</tr>
+<tr>
+<td>Участие в выставках</td>
+<td><code>/api/exhibition-participations/</code></td>
+</tr>
+<tr>
+<td>Акт движения</td>
+<td><code>/api/movement-acts/</code></td>
+</tr>
+<tr>
+<td>Строки движения</td>
+<td><code>/api/movements/</code></td>
+</tr>
+</tbody>
+</table>
+<p>Бэкенд реализует полный CRUD для каждой сущности, а также специализированные запросы:</p>
+<ol>
+<li><code>GET /api/funds/exhibitions_count/</code> — количество выставок по фондам.</li>
+<li><code>GET /api/collections/</code> → <code>items_count</code> — размер комплектов.</li>
+<li><code>GET /api/items/{id}/related_by_exhibitions/</code> — связанные предметы.</li>
+<li><code>GET /api/items/written_off_count_by_fund/</code> — списанные предметы по фондам за период.</li>
+<li><code>GET /api/items/fund_volume_percentage/</code> — доля фондов.</li>
+<li><code>GET /api/funds/full_report/</code> — расширенный отчёт для генератора ведомостей.</li>
+</ol>
+<h2 id="front-end-integration">Front-end Integration<a class="headerlink" href="#front-end-integration" title="Permanent link">&para;</a></h2>
+<p>Vue 3 + Pinia + Vuetify интерфейсы используют следующие сервисы:</p>
+<ul>
+<li><code>src/services/http.js</code> создаёт два axios-клиента (<code>/api</code> и <code>/api/auth</code>) и управляет токеном.</li>
+<li><code>src/stores/auth.js</code> оборачивает регистрацию, авторизацию, изменение профиля и пароля.</li>
+<li>Каждая страница вызывает DRF-ендпоинты и выводит ответ таблицами Vuetify.</li>
+</ul>
+<p>При сборке фронтенда необходимо установить зависимости:</p>
+<div class="highlight"><pre><span></span><code>npm install
+npm run dev
+</code></pre></div>
+<p>или эквивалентные команды для <code>pnpm</code>/<code>yarn</code>.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
